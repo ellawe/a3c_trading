@@ -18,17 +18,18 @@ from time import time
 import sys
 from trader_gym import environment
 from A3C_class import *
-from configs import TRAIN_DATA, LOAD_MODEL, LR, FRAMES_STACKED, NUM_WORKERS, MODEL_DIR
+from configs import TRAIN_DATA, load_model, LR, FRAMES_STACKED, NUM_WORKERS, MODEL_DIR, USE_DEVICE
 warnings.filterwarnings("ignore")
 
 # Если нет файла, то его нужно создать с помощью load_data.ipynb
 
 train_df = pd.read_pickle(TRAIN_DATA)
+train_df.drop_duplicates(inplace=True)
 
 if FRAMES_STACKED > 1:
     data = np.hstack([train_df.values[i:-FRAMES_STACKED + i - 1, :] for i in range(FRAMES_STACKED, 0, -1)])
 else:
-    data = train_df.values
+    data = train_df.values[0:-2]
 
 train_df = pd.DataFrame(data, train_df[FRAMES_STACKED:-1].index)
 max_episode_len = train_df.shape[0]
@@ -58,7 +59,7 @@ gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0)
 
 with tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=True, gpu_options=gpu_options)) as sess:
     coord = tf.train.Coordinator()
-    if LOAD_MODEL:
+    if load_model:
         print('Loading Model...')
         ckpt = tf.train.get_checkpoint_state(MODEL_DIR)
         saver.restore(sess, ckpt.model_checkpoint_path)

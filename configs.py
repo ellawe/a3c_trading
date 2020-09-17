@@ -1,25 +1,29 @@
 # Directories
 TENSORBOARD_DIR = '/mnt/a3c_data/tb/'
-MODEL_DIR = '/mnt/a3c_data/model/'
+MODEL_DIR = 'model'
 DATA_DIR = '/mnt/a3c_data/data/'
 PLOTS_DIR = '/mnt/a3c_data/plots/'
 
 # Data files
-POSTFIX = "['RTS-12.15']w5k"
-TEST_POSTFIX = "['RTS-3.16', 'RTS-6.16']w5k"
-POSTFIX_REAL = "['RTS-12.15']"
-TEST_POSTFIX_REAL = "['RTS-3.16', 'RTS-6.16']"
+postfix = "[_RTS-12.15_]"
+test_postfix = "[_RTS-3.16_, _RTS-6.16_]"
+postfix_real = "[_RTS-12.15_]"
+test_postfix_real = "[_RTS-3.16_, _RTS-6.16_]"
 
 # Network architechture
 EXTRA_DENSE = False
 N_HIDDEN = 64
 DROPOUT = True
-TRAINING = False
+training = False
 COOL_V = True
 COOL_A = False
-DEP = 1
-GAMMA = .8
-LOAD_MODEL = False
+dep = 1
+gamma = .8
+load_model = True
 LR = 1e-4
-COMISSION = 20  # rubls
+comission = 20  # rubls
 PRICE_MAG = 1 / 5000  # среднне различие между макс и мин ценой за 5000 шагов
+TRAIN_DATA = 'data\[_RTS-3.16_, _RTS-6.16_]'
+FRAMES_STACKED = 1
+NUM_WORKERS = 2
+USE_DEVICE = "cpu:0"

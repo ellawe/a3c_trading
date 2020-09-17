@@ -168,6 +168,8 @@ class Worker():
         return v_l / len(rollout), p_l / len(rollout), e_l / len(rollout), g_n, v_n
 
     def work(self, max_episode_length, gamma, sess, coord, saver, dep):
+        print('bnbzsnbd')
+        print(self.model_path)
         episode_count = sess.run(self.global_episodes)
         total_steps = 0
         print("Starting worker " + str(self.number))
@@ -230,6 +232,7 @@ class Worker():
                     v_l, p_l, e_l, g_n, v_n = self.train(episode_buffer, sess, gamma, 0.0)
 
                 if episode_count % 50 == 0 and self.name == 'worker_0':
+                    print('2121122134324')
                     saver.save(sess, self.model_path + '/model-' + str(episode_count) + '.cptk')
                     print("Saved Model")
 

@@ -29,7 +29,7 @@ import matplotlib
 matplotlib.rcParams.update({'font.size': 21})
 from configs import postfix, test_postfix, load_model, LR, dep, test_postfix_real, postfix_real
 
-data_dir_path = '/mnt/a3c_data/'
+data_dir_path = 'data/'
 
 # data
 print(data_dir_path + str(test_postfix))
@@ -67,6 +67,7 @@ def run_trades(max_episode_length, gamma, s_size, a_size, load_model, model_path
 
         if load_model:
             print('Loading Model...')
+            print(model_path)
             ckpt = tf.train.get_checkpoint_state(model_path)
             saver.restore(sess, ckpt.model_checkpoint_path)
         else:
@@ -112,7 +113,7 @@ def backtest(acts, o_R):
     return bt
 
 
-load_model = True
+#load_model = True
 model_path = 'model'
 length = R.shape[0]
 noise_level = 1e-5
@@ -162,7 +163,7 @@ for i in range(2):
     # [ R.index.get_loc('2015-12-29 10:06:00')[0], R.index.get_loc('2016-01-15 10:06:00')[0], \
     lengths = [R.index.get_loc('2016-03-15 10:06:00')[0], R.index.get_loc('2016-06-15 10:06:00')[0]]
     #names = ['2 weeks', '1 month', '3 month', '6 months']
-    names = ['3 month', '6 months']
+    names = ['3month', '6months']
     bt = backtest(acts[-1, :lengths[i]], test_R[:lengths[i] + dep + 2])
     fig = plt.figure(figsize=(12, 10))
     plt.ylim(60000, 140000)
@@ -172,12 +173,12 @@ for i in range(2):
     plt.ylabel('Rubles', fontname="Times New Roman")
     plt.xlabel('Time', fontname="Liberation Serif")
     plt.plot()
-    # plt.show()
-    plt.savefig('../new_plots/' + folder + '_' + names[i] + '.pdf', bbox_inches='tight', format='pdf')
+    plt.show()
+    plt.savefig('new_plots/' + folder + '_' + names[i] + '.pdf', bbox_inches='tight', format='pdf')
 
     # Отчет по системе
     B = bt.report
-    write_report(B, '../new_plots/' + folder + '_.txt')
+    write_report(B, 'new_plots/' + folder + '_.txt')
 
 
 # data
@@ -193,6 +194,7 @@ vals = R.values
 D = np.hstack([vals[i:-dep + i - 1, :] for i in range(dep, 0, -1)])
 R = pd.DataFrame(D, R[dep:-1].index)
 # R = R[:10000]
+plt.plot(R)
 
 
 # Main
@@ -217,11 +219,12 @@ def run_trades(max_episode_length, gamma, s_size, a_size, load_model, model_path
         if load_model:
             print('Loading Model...')
             ckpt = tf.train.get_checkpoint_state(model_path)
+            print(ckpt)
             saver.restore(sess, ckpt.model_checkpoint_path)
         else:
             sess.run(tf.global_variables_initializer())
 
-        summary_writer = tf.summary.FileWriter('tb/train', graph=sess.graph)
+        summary_writer = tf.summary.FileWriter('tb/test', graph=sess.graph)
         worker_threads = []
         for worker in workers:
             def worker_work(): return worker.work(max_episode_length, gamma, sess, coord, saver, dep, 0.33)
@@ -261,7 +264,7 @@ def backtest(acts, o_R):
     return bt
 
 
-load_model = True
+#load_model = True
 model_path = 'model'
 length = R.shape[0]
 noise_level = 1e-5
@@ -322,8 +325,12 @@ for i in range(1):
 
     plt.plot()
     # plt.show()
-    plt.savefig('../new_plots/' + folder + '_' + names[i] + '.pdf', bbox_inches='tight', format='pdf')
-
+    plt.savefig('new_plots/' + folder + '_' + names[i] + '.pdf', bbox_inches='tight', format='pdf')
+    print('dsfdsf')
+    for col in test_R.columns:
+        print(col)
+    print(test_R[test_R.columns[0]])
+    plt.show()
     # Отчет по системе
     B = bt.report
-    write_report(B, '../new_plots/' + folder + '_train.txt')
+    write_report(B, 'new_plots/' + folder + '_train.txt')
