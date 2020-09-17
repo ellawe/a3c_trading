@@ -8,6 +8,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import scipy
 import matplotlib as mpl
+mpl.rcParams['backend'] = "Qt4Agg"
 mpl.use('Agg')
 import pybacktest as pb
 import matplotlib.pyplot as plt
@@ -324,12 +325,16 @@ for i in range(1):
     plt.yscale('log')
 
     plt.plot()
-    # plt.show()
+    plt.show()
     plt.savefig('new_plots/' + folder + '_' + names[i] + '.pdf', bbox_inches='tight', format='pdf')
     print('dsfdsf')
-    for col in test_R.columns:
-        print(col)
-    print(test_R[test_R.columns[0]])
+    plt.clf()
+    print(test_R)
+    b_data = test_R[test_R.columns[0]]
+    print(type(b_data))
+    b_data.plot()
+    plt.savefig('new_plots/' + 'test' + '.pdf', bbox_inches='tight', format='pdf')
+
     plt.show()
     # Отчет по системе
     B = bt.report
