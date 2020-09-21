@@ -10,4 +10,4 @@ RUN pip3 install -r requirements.txt
 #RUN pip3 install runipy
 #ENV TINI_VERSION v0.6.0
 #CMD runipy test_trading.ipynb
-CMD ["python3","test_trading.py"]
+CMD ["python3","A3C_trading.py"]
